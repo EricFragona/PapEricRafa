@@ -10,6 +10,11 @@ def mostar_pin():
         pinEntry.configure(show='')
         visivel.configure(text='Esconder')
 
+def tema():
+    if ctk.set_appearance_mode == "Dark":
+        ctk.set_appearance_mode = "Light"
+    else:
+        ctk.set_appearance_mode = "Dark"
 
 app = ctk.CTk()
 app.geometry("450x350")
@@ -30,7 +35,10 @@ pinvar = ctk.StringVar()
 pinEntry = ctk.CTkEntry(app, textvariable=pinvar, show="*", placeholder_text="Pin", width=45 )
 pinEntry.place(x=210, y=140)
 visivel = ctk.CTkButton(app, text="Mostrar", width=100, command=mostar_pin)
-visivel.place(x=260, y=140)
+visivel.place(x=260, y=160)
+
+btnTema = ctk.CTkButton(app, text="tema", width=100, command=tema)
+btnTema.place(x=260, y=140)
 #-----------------------------------
 
 
