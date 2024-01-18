@@ -16,6 +16,14 @@ def mostar_pin(entry, btn):
 def fechar():
     root.quit()
 
+def limpar_login():
+    user.destroy()
+    usernameEntry.destroy()
+    pin.destroy()
+    pinEntry.destroy()
+    BtnMostrar.destroy()
+    BtnLogin.destroy()
+    
 def criar_login():
     global user, usernameEntry, pin, BtnLogin, pinEntry, BtnMostrar
     if 'user' in globals():
@@ -36,14 +44,6 @@ def criar_login():
     BtnMostrar.place(x=310, y=200)
     BtnLogin = ctk.CTkButton(root, text="Login", width=100)
     BtnLogin.place(x=230, y=250)
-    
-def limpar_login():
-    user.destroy()
-    usernameEntry.destroy()
-    pin.destroy()
-    pinEntry.destroy()
-    BtnMostrar.destroy()
-    BtnLogin.destroy()
     
 def nova_conta():
     limpar_login()
