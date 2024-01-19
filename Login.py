@@ -23,11 +23,23 @@ def limpar_login():
     pinEntry.destroy()
     BtnMostrar.destroy()
     BtnLogin.destroy()
+
+def limpar_conta():
+    user.destroy()
+    usernameEntry.destroy()
+    pin.destroy()
+    pinEntry2.destroy()
+    pin2.destroy()
+    pinEntry3.destroy()
+    BtnMostrar2.destroy()
+    BtnMostrar3.destroy()
+    BtnCriarConta.destroy()
     
 def criar_login():
     global user, usernameEntry, pin, BtnLogin, pinEntry, BtnMostrar
     if 'user' in globals():
         limpar_login()
+        limpar_conta()
     user = ctk.CTkLabel(root, text="Nome de Utilizador : ")
     user.place(x= 140, y =160)
     username = ctk.StringVar()
@@ -40,13 +52,16 @@ def criar_login():
     pinEntry = ctk.CTkEntry(root, textvariable=pinvar, show="*", placeholder_text="Pin", width=45 )
     pinEntry.place(x=260, y=200)
     
-    BtnMostrar = ctk.CTkButton(root, text="Mostrar", width=100, command=mostar_pin(pinEntry,BtnMostrar))
+    BtnMostrar = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda: mostar_pin(pinEntry, BtnMostrar))
     BtnMostrar.place(x=310, y=200)
     BtnLogin = ctk.CTkButton(root, text="Login", width=100)
     BtnLogin.place(x=230, y=250)
     
 def nova_conta():
-    limpar_login()
+    global pinEntry2, pin2, pinEntry3, BtnMostrar2, BtnMostrar3, BtnCriarConta
+    if 'user' in globals():
+        limpar_login()
+        limpar_conta()
     user = ctk.CTkLabel(root, text="Nome de Utilizador : ")
     user.place(x= 140, y =160)
     username = ctk.StringVar()
@@ -64,12 +79,12 @@ def nova_conta():
     pinEntry3 = ctk.CTkEntry(root, textvariable=pinvar2, show="*", placeholder_text="Pin", width=45 )
     pinEntry3.place(x=260, y=240)
     
-    BtnMostrar2 = ctk.CTkButton(root, text="Mostrar", width=100, command=mostar_pin(pinEntry2,BtnMostrar2))
+    BtnMostrar2 = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda:mostar_pin(pinEntry2,BtnMostrar2))
     BtnMostrar2.place(x=310, y=200)
-    BtnMostrar3 = ctk.CTkButton(root, text="Mostrar", width=100, command=mostar_pin(pinEntry3,BtnMostrar3))
+    BtnMostrar3 = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda:mostar_pin(pinEntry3,BtnMostrar3))
     BtnMostrar3.place(x=310, y=240)
-    BtnLogin = ctk.CTkButton(root, text="Login", width=100)
-    BtnLogin.place(x=230, y=250)
+    BtnCriarConta = ctk.CTkButton(root, text="Criar Conta", width=100)
+    BtnCriarConta.place(x=230, y=280)
 #App---------------------------------------
 root = ctk.CTk()
 w = 550
