@@ -2,10 +2,11 @@ import customtkinter as ctk
 from CTkMenuBar import *
 import sqlite3
 
+# Variável global para armazenar o botão Login
+btn_login = None
 
-
-#Funções------------------------------------
-def mostar_pin(entry, btn):
+# Funções------------------------------------
+def mostrar_pin(entry, btn):
     if entry.cget('show') == '':
         entry.configure(show='*')
         btn.configure(text='Mostrar')
@@ -16,76 +17,53 @@ def mostar_pin(entry, btn):
 def fechar():
     root.quit()
 
-def limpar_login():
-    user.destroy()
-    usernameEntry.destroy()
-    pin.destroy()
-    pinEntry.destroy()
-    BtnMostrar.destroy()
-    BtnLogin.destroy()
-
-def limpar_conta():
-    user.destroy()
-    usernameEntry.destroy()
-    pin.destroy()
-    pinEntry2.destroy()
-    pin2.destroy()
-    pinEntry3.destroy()
-    BtnMostrar2.destroy()
-    BtnMostrar3.destroy()
-    BtnCriarConta.destroy()
-    
 def criar_login():
-    global user, usernameEntry, pin, BtnLogin, pinEntry, BtnMostrar
-    if 'user' in globals():
-        limpar_login()
-        limpar_conta()
-    user = ctk.CTkLabel(root, text="Nome de Utilizador : ")
-    user.place(x= 140, y =160)
+    global btn_login  # Definir a variável como global
+
+    if btn_login is not None:
+        btn_login.destroy()
+
+    user_label = ctk.CTkLabel(root, text="Nome de Utilizador : ")
+    user_label.place(x=140, y=160)
     username = ctk.StringVar()
-    usernameEntry = ctk.CTkEntry(root, textvariable=username, placeholder_text="Utilizador", width=151)
-    usernameEntry.place(x=260, y=160)
-    
-    pin = ctk.CTkLabel(root, text="Pin de 4 dígitos : ")
-    pin.place(x=160, y=200)
-    pinvar = ctk.StringVar()
-    pinEntry = ctk.CTkEntry(root, textvariable=pinvar, show="*", placeholder_text="Pin", width=45 )
-    pinEntry.place(x=260, y=200)
-    
-    BtnMostrar = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda: mostar_pin(pinEntry, BtnMostrar))
-    BtnMostrar.place(x=310, y=200)
-    BtnLogin = ctk.CTkButton(root, text="Login", width=100)
-    BtnLogin.place(x=230, y=250)
-    
+    username_entry = ctk.CTkEntry(root, textvariable=username, placeholder_text="Utilizador", width=151)
+    username_entry.place(x=260, y=160)
+
+    pin_label = ctk.CTkLabel(root, text="Pin de 4 dígitos : ")
+    pin_label.place(x=160, y=200)
+    pin_var = ctk.StringVar()
+    pin_entry = ctk.CTkEntry(root, textvariable=pin_var, show="*", placeholder_text="Pin", width=45)
+    pin_entry.place(x=260, y=200)
+
+    btn_mostrar = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda: mostrar_pin(pin_entry, btn_mostrar))
+    btn_mostrar.place(x=310, y=200)
+
+    btn_login = ctk.CTkButton(root, text="Login", width=100)
+    btn_login.place(x=230, y=250)
+
+    return user_label, username_entry, pin_label, pin_entry, btn_mostrar
+
 def nova_conta():
-    global pinEntry2, pin2, pinEntry3, BtnMostrar2, BtnMostrar3, BtnCriarConta
-    if 'user' in globals():
-        limpar_login()
-        limpar_conta()
-    user = ctk.CTkLabel(root, text="Nome de Utilizador : ")
-    user.place(x= 140, y =160)
-    username = ctk.StringVar()
-    usernameEntry = ctk.CTkEntry(root, textvariable=username, placeholder_text="Utilizador", width=151)
-    usernameEntry.place(x=260, y=160)
-    
-    pin = ctk.CTkLabel(root, text="Pin de 4 dígitos : ")
-    pin.place(x=160, y=200)
-    pinvar = ctk.StringVar()
-    pinEntry2 = ctk.CTkEntry(root, textvariable=pinvar, show="*", placeholder_text="Pin", width=45 )
-    pinEntry2.place(x=260, y=200)
-    pin2 = ctk.CTkLabel(root, text="Repetir Pin : ")
-    pin2.place(x=185, y=240)
-    pinvar2 = ctk.StringVar()
-    pinEntry3 = ctk.CTkEntry(root, textvariable=pinvar2, show="*", placeholder_text="Pin", width=45 )
-    pinEntry3.place(x=260, y=240)
-    
-    BtnMostrar2 = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda:mostar_pin(pinEntry2,BtnMostrar2))
-    BtnMostrar2.place(x=310, y=200)
-    BtnMostrar3 = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda:mostar_pin(pinEntry3,BtnMostrar3))
-    BtnMostrar3.place(x=310, y=240)
-    BtnCriarConta = ctk.CTkButton(root, text="Criar Conta", width=100)
-    BtnCriarConta.place(x=230, y=280)
-#App---------------------------------------
+    limpar_conta(criar_login())
+
+def limpar_conta(widgets):
+    for widget in widgets:
+        widget.destroy()
+
+    pin_label2 = ctk.CTkLabel(root, text="Repetir Pin : ")
+    pin_label2.place(x=185, y=240)
+    pin_var2 = ctk.StringVar()
+    pin_entry2 = ctk.CTkEntry(root, textvariable=pin_var2, show="*", placeholder_text="Pin", width=45)
+    pin_entry2.place(x=260, y=240)
+
+    btn_mostrar2 = ctk.CTkButton(root, text="Mostrar", width=100, command=lambda: mostrar_pin(pin_entry2, btn_mostrar2))
+    btn_mostrar2.place(x=310, y=240)
+    btn_criar_conta = ctk.CTkButton(root, text="Criar Conta", width=100)
+    btn_criar_conta.place(x=230, y=280)
+
+    return pin_label2, pin_entry2, btn_mostrar2, btn_criar_conta
+
+# App---------------------------------------
 root = ctk.CTk()
 w = 550
 h = 450
@@ -97,22 +75,17 @@ root.geometry('%dx%d+%d+%d' % (w, h, x, y))
 root.title("Faça Login ou crie uma nova conta")
 ctk.set_appearance_mode("dark")
 temaString = 1
-titulo = ctk.CTkLabel(root, text="No Name Game", font=("TkDefaultFont",30), fg_color="black", corner_radius=20, padx=2, pady=2)
+titulo = ctk.CTkLabel(root, text="No Name Game", font=("TkDefaultFont", 30), fg_color="black", corner_radius=20, padx=2, pady=2)
 titulo.place(x=160, y=60)
 root.resizable(False, False)
 
-
-
-#Menu--------------------------------------
+# Menu--------------------------------------
 menu = CTkMenuBar(root)
 button_1 = menu.add_cascade("Definições")
 op1 = CustomDropdownMenu(widget=button_1)
-op1.add_option(option="Login", command=criar_login)
+op1.add_option(option="Login", command=lambda: limpar_conta(criar_login()))
 op1.add_option(option="Nova Conta", command=nova_conta)
 op1.add_option(option="Sair", command=fechar)
 
-
-
 criar_login()
 root.mainloop()
-
