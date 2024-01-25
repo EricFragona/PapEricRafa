@@ -2,27 +2,9 @@ import customtkinter as ctk
 from CTkMenuBar import *
 import sqlite3
 
-# Variável global para armazenar o botão Login
-btn_login = None
-
 # Funções------------------------------------
-def mostrar_pin(entry, btn):
-    if entry.cget('show') == '':
-        entry.configure(show='*')
-        btn.configure(text='Mostrar')
-    else:
-        entry.configure(show='')
-        btn.configure(text='Esconder')
 
-def fechar():
-    root.quit()
-
-def criar_login():
-    global btn_login  # Definir a variável como global
-
-    if btn_login is not None:
-        btn_login.destroy()
-
+def frame1():
     user_label = ctk.CTkLabel(root, text="Nome de Utilizador : ")
     user_label.place(x=140, y=160)
     username = ctk.StringVar()
@@ -40,8 +22,17 @@ def criar_login():
 
     btn_login = ctk.CTkButton(root, text="Login", width=100)
     btn_login.place(x=230, y=250)
+    
+def mostrar_pin(entry, btn):
+    if entry.cget('show') == '':
+        entry.configure(show='*')
+        btn.configure(text='Mostrar')
+    else:
+        entry.configure(show='')
+        btn.configure(text='Esconder')
 
-    return user_label, username_entry, pin_label, pin_entry, btn_mostrar
+def fechar():
+    root.quit()
 
 def nova_conta():
     limpar_conta(criar_login())
@@ -87,5 +78,5 @@ op1.add_option(option="Login", command=lambda: limpar_conta(criar_login()))
 op1.add_option(option="Nova Conta", command=nova_conta)
 op1.add_option(option="Sair", command=fechar)
 
-criar_login()
+frame1()
 root.mainloop()
