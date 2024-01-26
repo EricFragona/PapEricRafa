@@ -5,8 +5,15 @@ import json
 class LoginForm:
     def __init__(self, root):
         self.root = root
-        self.root.title("Login e Registro")
-        self.root.geometry("550x350")
+        self.root.title("No Name Game - Login ou criação de conta")
+        w = 550
+        h = 350
+        ws = root.winfo_screenwidth()
+        hs = root.winfo_screenheight()
+        x = (ws/2) - (w/2)
+        y = (hs/2) - (h/2)
+        root.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
 
         self.login_frame = tk.Frame(self.root)
         self.register_frame = tk.Frame(self.root)
@@ -33,19 +40,23 @@ class LoginForm:
         self.login_password_entry.grid(row=2, column=1, sticky="w")
 
         tk.Button(self.login_frame, text="Entrar", command=self.login).grid(row=3, column=0, columnspan=2, pady=10)
-        tk.Button(self.login_frame, text="Registrar", command=self.show_register_frame).grid(row=4, column=0, columnspan=2, pady=10)
-
+        tk.Button(self.login_frame, text="Criar Nova Conta!", command=self.show_register_frame).grid(row=4, column=0, columnspan=2, pady=10)
+        
         # Widgets para o frame de registro
         tk.Label(self.register_frame, text="Registro").grid(row=0, column=0, columnspan=2, pady=10)
         tk.Label(self.register_frame, text="Novo Usuário:").grid(row=1, column=0, sticky="e")
         tk.Label(self.register_frame, text="Nova Senha:").grid(row=2, column=0, sticky="e")
+        tk.Label(self.register_frame, text="Repetir Senha:").grid(row=3, column=0, sticky="e")
 
         self.register_user_entry = tk.Entry(self.register_frame)
         self.register_password_entry = tk.Entry(self.register_frame, show="*")
+        self.repetir_password_entry = tk.Entry(self.register_frame, show="*")
         self.register_user_entry.grid(row=1, column=1, sticky="w")
         self.register_password_entry.grid(row=2, column=1, sticky="w")
+        self.repetir_password_entry.grid(row=3, column=1, sticky="w")
 
-        tk.Button(self.register_frame, text="Registrar", command=self.register).grid(row=3, column=0, columnspan=2, pady=10)
+        tk.Button(self.register_frame, text="Registrar", command=self.register).grid(row=4, column=0, columnspan=2, pady=10)
+        tk.Button(self.register_frame, text="Já tenho conta! ", command=self.show_login_frame).grid(row=5, column=0, columnspan=2, pady=10)
 
         # Inicialmente, ocultar o frame de registro
         self.show_login_frame()
@@ -63,12 +74,16 @@ class LoginForm:
     def register(self):
         user = self.register_user_entry.get()
         password = self.register_password_entry.get()
-
+        password2 = self.repetir_password_entry.get()
+        
         # Verificar se os campos estão em branco
         if not user or not password:
             messagebox.showerror("Registro", "Por favor, preencha todos os campos.")
             return
 
+        if password != password2:
+            messagebox.showerror("Registro", "As Passwords não coincidem!")
+            return
         # Adicionar novo usuário ao arquivo JSON
         users = self.load_users()
 
@@ -109,4 +124,5 @@ class LoginForm:
 if __name__ == "__main__":
     root = tk.Tk()
     app = LoginForm(root)
+    
     root.mainloop()

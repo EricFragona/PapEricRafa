@@ -35,7 +35,7 @@ def fechar():
     root.quit()
 
 def nova_conta():
-    limpar_conta(criar_login())
+    limpar_conta()
 
 def limpar_conta(widgets):
     for widget in widgets:
@@ -74,7 +74,7 @@ root.resizable(False, False)
 menu = CTkMenuBar(root)
 button_1 = menu.add_cascade("Definições")
 op1 = CustomDropdownMenu(widget=button_1)
-op1.add_option(option="Login", command=lambda: limpar_conta(criar_login()))
+op1.add_option(option="Login",)
 op1.add_option(option="Nova Conta", command=nova_conta)
 op1.add_option(option="Sair", command=fechar)
 
