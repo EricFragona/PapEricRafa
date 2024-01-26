@@ -13,11 +13,11 @@ class LoginForm:
         x = (ws/2) - (w/2)
         y = (hs/2) - (h/2)
         root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-
-
+        
         self.login_frame = tk.Frame(self.root)
-        self.register_frame = tk.Frame(self.root)
+        self.registo_frame = tk.Frame(self.root)
 
+        self.add_botao_fechar()
         self.create_widgets()
 
     def create_widgets(self):
@@ -27,7 +27,7 @@ class LoginForm:
         
         # Configurar a estrutura da janela
         self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-        self.register_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         # Widgets para o frame de login
         tk.Label(self.login_frame, text="Login").grid(row=0, column=0, columnspan=2, pady=10)
@@ -41,22 +41,20 @@ class LoginForm:
 
         tk.Button(self.login_frame, text="Entrar", command=self.login).grid(row=3, column=0, columnspan=2, pady=10)
         tk.Button(self.login_frame, text="Criar Nova Conta!", command=self.show_register_frame).grid(row=4, column=0, columnspan=2, pady=10)
-        
-        # Widgets para o frame de registro
-        tk.Label(self.register_frame, text="Registro").grid(row=0, column=0, columnspan=2, pady=10)
-        tk.Label(self.register_frame, text="Novo Usuário:").grid(row=1, column=0, sticky="e")
-        tk.Label(self.register_frame, text="Nova Senha:").grid(row=2, column=0, sticky="e")
-        tk.Label(self.register_frame, text="Repetir Senha:").grid(row=3, column=0, sticky="e")
+        tk.Label(self.registo_frame, text="Registro").grid(row=0, column=0, columnspan=2, pady=10)
+        tk.Label(self.registo_frame, text="Novo Usuário:").grid(row=1, column=0, sticky="e")
+        tk.Label(self.registo_frame, text="Nova Senha:").grid(row=2, column=0, sticky="e")
+        tk.Label(self.registo_frame, text="Repetir Senha:").grid(row=3, column=0, sticky="e")
 
-        self.register_user_entry = tk.Entry(self.register_frame)
-        self.register_password_entry = tk.Entry(self.register_frame, show="*")
-        self.repetir_password_entry = tk.Entry(self.register_frame, show="*")
+        self.register_user_entry = tk.Entry(self.registo_frame)
+        self.register_password_entry = tk.Entry(self.registo_frame, show="*")
+        self.repetir_password_entry = tk.Entry(self.registo_frame, show="*")
         self.register_user_entry.grid(row=1, column=1, sticky="w")
         self.register_password_entry.grid(row=2, column=1, sticky="w")
         self.repetir_password_entry.grid(row=3, column=1, sticky="w")
 
-        tk.Button(self.register_frame, text="Registrar", command=self.register).grid(row=4, column=0, columnspan=2, pady=10)
-        tk.Button(self.register_frame, text="Já tenho conta! ", command=self.show_login_frame).grid(row=5, column=0, columnspan=2, pady=10)
+        tk.Button(self.registo_frame, text="Registrar", command=self.show_register_frame).grid(row=4, column=0, columnspan=2, pady=10)
+        tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame).grid(row=5, column=0, columnspan=2, pady=10)
 
         # Inicialmente, ocultar o frame de registro
         self.show_login_frame()
@@ -115,11 +113,15 @@ class LoginForm:
 
     def show_register_frame(self):
         self.login_frame.place_forget()  # Ocultar o frame de login
-        self.register_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de registro
+        self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de registro
 
     def show_login_frame(self):
-        self.register_frame.place_forget()  # Ocultar o frame de registro
+        self.registo_frame.place_forget()  # Ocultar o frame de registro
         self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de login
+        
+    def add_botao_fechar(self):     #Adicionar botao para fechar
+        sair = tk.PhotoImage(file="sair.png")
+        tk.Button(self.root, text="Sair", image=sair, command=self.root.destroy).place(relx=0, rely=0.3)
 
 if __name__ == "__main__":
     root = tk.Tk()
