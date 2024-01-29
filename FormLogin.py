@@ -13,48 +13,50 @@ class LoginForm:
         x = (ws/2) - (w/2)
         y = (hs/2) - (h/2)
         root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        
-        self.login_frame = tk.Frame(self.root)
-        self.registo_frame = tk.Frame(self.root)
+        root.overrideredirect(True)
+        root.config(bg="#1e3a56")
+        self.login_frame = tk.Frame(self.root, bg="#f2f2f2")
+        self.registo_frame = tk.Frame(self.root, bg="#f2f2f2")
 
-        self.add_botao_fechar()
         self.create_widgets()
+        self.add_botao_fechar()
 
     def create_widgets(self):
         # Rótulo do título
-        title_label = tk.Label(self.root, text="No Name Game", font=("Helvetica", 25, "bold"))
-        title_label.place(relx=0.5, y=50, anchor=tk.CENTER)
-        
+        title_label = tk.Label(self.root, text="No Name Game", font=("Helvetica", 25, "bold"), bg="#1e3a56", fg="white")
+        title_label.place(relx=0.5, y=20, anchor=tk.CENTER)
+
         # Configurar a estrutura da janela
-        self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, width= 280, height=250)
         self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         # Widgets para o frame de login
-        tk.Label(self.login_frame, text="Login").grid(row=0, column=0, columnspan=2, pady=10)
-        tk.Label(self.login_frame, text="Usuário:").grid(row=1, column=0, sticky="e")
-        tk.Label(self.login_frame, text="Senha:").grid(row=2, column=0, sticky="e")
+        tk.Label(self.login_frame, text="Login", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=0, column=0, columnspan=2, pady=10)
+        tk.Label(self.login_frame, text="Utilizador:", font=("Arial", 12), bg="#f2f2f2").grid(row=1, column=0, sticky="e", pady=5)
+        tk.Label(self.login_frame, text="Senha:", font=("Arial", 12), bg="#f2f2f2").grid(row=2, column=0, sticky="e", pady=5)
 
-        self.login_user_entry = tk.Entry(self.login_frame)
-        self.login_password_entry = tk.Entry(self.login_frame, show="*")
-        self.login_user_entry.grid(row=1, column=1, sticky="w")
-        self.login_password_entry.grid(row=2, column=1, sticky="w")
+        self.login_user_entry = tk.Entry(self.login_frame, font=("Arial", 12))
+        self.login_password_entry = tk.Entry(self.login_frame, show="*", font=("Arial", 12))
+        self.login_user_entry.grid(row=1, column=1, sticky="w", pady=5)
+        self.login_password_entry.grid(row=2, column=1, sticky="w", pady=5)
 
-        tk.Button(self.login_frame, text="Entrar", command=self.login).grid(row=3, column=0, columnspan=2, pady=10)
-        tk.Button(self.login_frame, text="Criar Nova Conta!", command=self.show_register_frame).grid(row=4, column=0, columnspan=2, pady=10)
-        tk.Label(self.registo_frame, text="Registro").grid(row=0, column=0, columnspan=2, pady=10)
-        tk.Label(self.registo_frame, text="Novo Usuário:").grid(row=1, column=0, sticky="e")
-        tk.Label(self.registo_frame, text="Nova Senha:").grid(row=2, column=0, sticky="e")
-        tk.Label(self.registo_frame, text="Repetir Senha:").grid(row=3, column=0, sticky="e")
+        tk.Button(self.login_frame, text="Entrar", command=self.login, font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=3, column=0, columnspan=2, pady=10)
+        tk.Button(self.login_frame, text="Criar Nova Conta!", command=self.show_register_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=4, column=0, columnspan=2, pady=10)
+        # Widgets para o frame de registo
+        tk.Label(self.registo_frame, text="Registro", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=0, column=0, columnspan=2, pady=10)
+        tk.Label(self.registo_frame, text="Novo Utilizador:", font=("Arial", 12), bg="#f2f2f2").grid(row=1, column=0, sticky="e", pady=5)
+        tk.Label(self.registo_frame, text="Nova Senha:", font=("Arial", 12), bg="#f2f2f2").grid(row=2, column=0, sticky="e", pady=5)
+        tk.Label(self.registo_frame, text="Repetir Senha:", font=("Arial", 12), bg="#f2f2f2").grid(row=3, column=0, sticky="e", pady=5)
 
-        self.register_user_entry = tk.Entry(self.registo_frame)
-        self.register_password_entry = tk.Entry(self.registo_frame, show="*")
-        self.repetir_password_entry = tk.Entry(self.registo_frame, show="*")
-        self.register_user_entry.grid(row=1, column=1, sticky="w")
-        self.register_password_entry.grid(row=2, column=1, sticky="w")
-        self.repetir_password_entry.grid(row=3, column=1, sticky="w")
+        self.register_user_entry = tk.Entry(self.registo_frame, font=("Arial", 12))
+        self.register_password_entry = tk.Entry(self.registo_frame, show="*", font=("Arial", 12))
+        self.repetir_password_entry = tk.Entry(self.registo_frame, show="*", font=("Arial", 12))
+        self.register_user_entry.grid(row=1, column=1, sticky="w", pady=5)
+        self.register_password_entry.grid(row=2, column=1, sticky="w", pady=5)
+        self.repetir_password_entry.grid(row=3, column=1, sticky="w", pady=5)
 
-        tk.Button(self.registo_frame, text="Registrar", command=self.show_register_frame).grid(row=4, column=0, columnspan=2, pady=10)
-        tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame).grid(row=5, column=0, columnspan=2, pady=10)
+        tk.Button(self.registo_frame, text="Registrar", command=self.register, font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=4, column=0, columnspan=2, pady=10)
+        tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=5, column=0, columnspan=2, pady=10)
 
         # Inicialmente, ocultar o frame de registro
         self.show_login_frame()
@@ -63,11 +65,11 @@ class LoginForm:
         user = self.login_user_entry.get()
         password = self.login_password_entry.get()
 
-        # Verificar se o usuário e senha correspondem
+        # Verificar se o utilizador e senha correspondem
         if self.check_credentials(user, password):
             messagebox.showinfo("Login", "Login bem-sucedido!")
         else:
-            messagebox.showerror("Login", "Usuário ou senha incorretos.")
+            messagebox.showerror("Login", "Utilizador ou senha incorretos.")
 
     def register(self):
         user = self.register_user_entry.get()
@@ -82,12 +84,12 @@ class LoginForm:
         if password != password2:
             messagebox.showerror("Registro", "As Passwords não coincidem!")
             return
-        # Adicionar novo usuário ao arquivo JSON
+        # Adicionar novo utilizador ao arquivo JSON
         users = self.load_users()
 
-        # Verificar se o usuário já existe
+        # Verificar se o utilizador já existe
         if user in users:
-            messagebox.showerror("Registro", "Usuário já existe. Por favor, escolha outro.")
+            messagebox.showerror("Registro", "Utilizador já existe. Por favor, escolha outro.")
         else:
             users[user] = password
             self.save_users(users)
@@ -118,11 +120,14 @@ class LoginForm:
     def show_login_frame(self):
         self.registo_frame.place_forget()  # Ocultar o frame de registro
         self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de login
+    
+    def fechar(self):
+        self.root.quit()    
+    
+    def add_botao_fechar(self):
+        self.sair = tk.PhotoImage(file="sair.png").subsample(17)
+        tk.Button(self.root, text="Sair", image=self.sair, compound="left", command=self.fechar, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#d9534f", fg="white").place(relx=0.87, rely=0)
         
-    def add_botao_fechar(self):     #Adicionar botao para fechar
-        sair = tk.PhotoImage(file="sair.png")
-        tk.Button(self.root, text="Sair", image=sair, command=self.root.destroy).place(relx=0, rely=0.3)
-
 if __name__ == "__main__":
     root = tk.Tk()
     app = LoginForm(root)

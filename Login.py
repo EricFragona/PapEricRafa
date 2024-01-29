@@ -31,8 +31,8 @@ def mostrar_pin(entry, btn):
         entry.configure(show='')
         btn.configure(text='Esconder')
 
-def fechar():
-    root.quit()
+#def fechar():
+#    root.quit()
 
 def nova_conta():
     limpar_conta()
