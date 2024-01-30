@@ -4,11 +4,13 @@ conn = sqlite3.connect('baseDados.db')
 cur = conn.cursor()
 
 def confirmarLogin(user, passw):
-    cur.execute("SELECT Id FROM user WHERE Nome=:user AND Pin=:passw")
+    cur.execute("SELECT Id FROM user WHERE Nome=? AND Pin=?", (user, passw))
     result = cur.fetchone()
     if result:
-        # Usuário e senha correspondem
         return True
     else:
-        # Usuário ou senha incorretos
         return False
+
+def criarConta(user, passw):
+    cur.execute("INSERT INTO user (Nome, Pin) VALUES (?, ?)", (user, passw))
+    conn.commit()
