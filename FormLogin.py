@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import json
+import Sqlite as Sq
 
 class LoginForm:
     def __init__(self, root):
@@ -20,6 +21,7 @@ class LoginForm:
 
         self.create_widgets()
         self.add_botao_fechar()
+        self.addBotaoVerSenhas()
 
     def create_widgets(self):
         # Rótulo do título
@@ -27,7 +29,7 @@ class LoginForm:
         title_label.place(relx=0.5, y=20, anchor=tk.CENTER)
 
         # Configurar a estrutura da janela
-        self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER, width= 280, height=250)
+        self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         # Widgets para o frame de login
@@ -40,7 +42,7 @@ class LoginForm:
         self.login_user_entry.grid(row=1, column=1, sticky="w", pady=5)
         self.login_password_entry.grid(row=2, column=1, sticky="w", pady=5)
 
-        tk.Button(self.login_frame, text="Entrar", command=self.login, font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=3, column=0, columnspan=2, pady=10)
+        tk.Button(self.login_frame, text="Entrar", command=lambda: Sq.confirmarLogin(self.login_user_entry.get, self.login_password_entry.get), font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=3, column=0, columnspan=2, pady=10)
         tk.Button(self.login_frame, text="Criar Nova Conta!", command=self.show_register_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=4, column=0, columnspan=2, pady=10)
         # Widgets para o frame de registo
         tk.Label(self.registo_frame, text="Registro", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=0, column=0, columnspan=2, pady=10)
@@ -61,15 +63,15 @@ class LoginForm:
         # Inicialmente, ocultar o frame de registro
         self.show_login_frame()
 
-    def login(self):
-        user = self.login_user_entry.get()
-        password = self.login_password_entry.get()
-
-        # Verificar se o utilizador e senha correspondem
-        if self.check_credentials(user, password):
-            messagebox.showinfo("Login", "Login bem-sucedido!")
-        else:
-            messagebox.showerror("Login", "Utilizador ou senha incorretos.")
+    #def login(self):
+    #    user = self.login_user_entry.get()
+    #    password = self.login_password_entry.get()
+#
+    #    # Verificar se o utilizador e senha correspondem
+    #    if self.check_credentials(user, password):
+    #        messagebox.showinfo("Login", "Login bem-sucedido!")
+    #    else:
+    #        messagebox.showerror("Login", "Utilizador ou senha incorretos.")
 
     def register(self):
         user = self.register_user_entry.get()
@@ -107,7 +109,7 @@ class LoginForm:
             with open("users.json", "r") as file:
                 return json.load(file)
         except FileNotFoundError:
-            return {}
+            return{}
 
     def save_users(self, users):
         with open("users.json", "w") as file:
@@ -116,18 +118,36 @@ class LoginForm:
     def show_register_frame(self):
         self.login_frame.place_forget()  # Ocultar o frame de login
         self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de registro
-
+        self.login_password_entry.delete(0, 'end')
+        self.login_user_entry.delete(0, 'end')
+         
     def show_login_frame(self):
         self.registo_frame.place_forget()  # Ocultar o frame de registro
         self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de login
-    
-    def fechar(self):
-        self.root.quit()    
+        self.register_user_entry.delete(0, 'end')
+        self.register_password_entry.delete(0, 'end')
+        self.repetir_password_entry.delete(0, 'end')
     
     def add_botao_fechar(self):
-        self.sair = tk.PhotoImage(file="sair.png").subsample(17)
-        tk.Button(self.root, text="Sair", image=self.sair, compound="left", command=self.fechar, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#d9534f", fg="white").place(relx=0.87, rely=0)
-        
+        self.sair = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\sair.png').subsample(17)
+        tk.Button(self.root, text="Sair", image=self.sair, compound="left", command=self.root.quit, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#d9534f", fg="white").place(relx=0.86, rely=0.01)
+    
+    def ocultarSenha(self):
+        self.register_password_entry.config(show="*")
+        self.repetir_password_entry.config(show="*")
+        self.login_password_entry.config(show="*")
+
+    def mostrarSenha(self):
+        self.register_password_entry.config(show="")
+        self.repetir_password_entry.config(show="")
+        self.login_password_entry.config(show="")
+    
+    def addBotaoVerSenhas(self):
+        self.ver = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoAberto.png').subsample(17)
+        tk.Button(self.root, text="Mostrar", image=self.ver, compound="left", command=self.mostrarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=106).place(relx=0.01, rely=0.01)
+        self.esconder = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoFechado.png').subsample(17)
+        tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.01, rely=0.13)
+    
 if __name__ == "__main__":
     root = tk.Tk()
     app = LoginForm(root)
