@@ -62,11 +62,11 @@ class LoginForm:
         tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=5, column=0, columnspan=2, pady=10)
 
         # Widgets para o frame de opções
-        tk.Label(self.opcoes_frame, text="Opções", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=1, column=0, columnspan=4, pady=10)
-        tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=3, column=3, pady=10)
-        tk.Button(self.opcoes_frame, text="Alterar Password", font=("Arial", 12, "bold"), bg="#f39c12", fg="white").grid(row=4, column=3, pady=10)
-        tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 12, "bold"), bg="#8e44ad", fg="white").grid(row=5, column=3, pady=10)
-        tk.Button(self.opcoes_frame, text="Apagar Conta", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white").grid(row=6, column=3, pady=10)
+        tk.Label(self.opcoes_frame, text="Opções", font=("Arial", 14, "bold"), bg="#f2f2f2").grid(row=2, column=0, columnspan=4, pady=5)
+        tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=25).grid(row=3, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Alterar Password", font=("Arial", 12, "bold"), bg="#f39c12", fg="white", width=25).grid(row=4, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 12, "bold"), bg="#8e44ad", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Apagar Conta", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
 
         # Inicialmente, ocultar o frame de registro
         self.show_login_frame()
@@ -129,7 +129,7 @@ class LoginForm:
         tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.05, rely=0.49)
     
     def mostrar_nome_bem_vindo(self, nome):
-        tk.Label(self.opcoes_frame, text=f"Bem vindo: {nome}", font=("Arial", 9, "bold"), bg="#f2f2f2").grid(row=2, column=0, pady=10)
+        tk.Label(self.opcoes_frame, text=f"Bem vindo: {nome}", font=("Arial", 9, "bold"), bg="#f2f2f2").place(relx=0, rely=0.03)
     
     def verificar_login(self):
         user = self.login_user_entry.get()
