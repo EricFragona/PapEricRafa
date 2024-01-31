@@ -18,6 +18,7 @@ class LoginForm:
         root.config(bg="#1e3a56")
         self.login_frame = tk.Frame(self.root, bg="#f2f2f2")
         self.registo_frame = tk.Frame(self.root, bg="#f2f2f2")
+        self.opcoes_frame = tk.Frame(self.root, bg="#f2f2f2")
 
         self.create_widgets()
         self.addBotaoVerSenhas()
@@ -25,12 +26,12 @@ class LoginForm:
     def create_widgets(self):
         # Rótulo do título
         title_label = tk.Label(self.root, text="No Name Game", font=("Helvetica", 25, "bold"), bg="#1e3a56", fg="white")
-        title_label.place(relx=0.5, y=30, anchor=tk.CENTER)
+        title_label.place(relx=0.5, y=25, anchor=tk.CENTER)
 
         # Configurar a estrutura da janela
         self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-
+        self.opcoes_frame.place(x=0.5, y=0.5, anchor=tk.CENTER)
         # Widgets para o frame de login
         tk.Label(self.login_frame, text="Login", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=0, column=0, columnspan=2, pady=10)
         tk.Label(self.login_frame, text="Utilizador:", font=("Arial", 12), bg="#f2f2f2").grid(row=1, column=0, sticky="e", pady=5)
@@ -60,19 +61,17 @@ class LoginForm:
         tk.Button(self.registo_frame, text="Registrar", command=self.register, font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=5, column=0, columnspan=2, pady=10)
 
+        # Widgets para o frame de opções
+        tk.Label(self.opcoes_frame, text="Opções", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=1, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=3, column=3, pady=10)
+        tk.Button(self.opcoes_frame, text="Alterar Password", font=("Arial", 12, "bold"), bg="#f39c12", fg="white").grid(row=4, column=3, pady=10)
+        tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 12, "bold"), bg="#8e44ad", fg="white").grid(row=5, column=3, pady=10)
+        tk.Button(self.opcoes_frame, text="Apagar Conta", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white").grid(row=6, column=3, pady=10)
+
         # Inicialmente, ocultar o frame de registro
         self.show_login_frame()
-
-    #def login(self):
-    #    user = self.login_user_entry.get()
-    #    password = self.login_password_entry.get()
-#
-    #    # Verificar se o utilizador e senha correspondem
-    #    if self.check_credentials(user, password):
-    #        messagebox.showinfo("Login", "Login bem-sucedido!")
-    #    else:
-    #        messagebox.showerror("Login", "Utilizador ou senha incorretos.")
-
+        #self.show_opcoes_frame()
+        
     def register(self):
         user = self.register_user_entry.get()
         password = self.register_password_entry.get()
@@ -92,17 +91,26 @@ class LoginForm:
             self.show_login_frame()
 
     def show_register_frame(self):
-        self.login_frame.place_forget()  # Ocultar o frame de login
-        self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de registro
+        self.login_frame.place_forget()
+        self.opcoes_frame.place_forget()
+        self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.login_password_entry.delete(0, 'end')
         self.login_user_entry.delete(0, 'end')
          
     def show_login_frame(self):
-        self.registo_frame.place_forget()  # Ocultar o frame de registro
-        self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)  # Exibir o frame de login
+        self.registo_frame.place_forget()
+        self.opcoes_frame.place_forget()
+        self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.register_user_entry.delete(0, 'end')
         self.register_password_entry.delete(0, 'end')
         self.repetir_password_entry.delete(0, 'end')
+        
+    def show_opcoes_frame(self):
+        self.login_frame.place_forget()
+        self.registo_frame.place_forget()
+        self.opcoes_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        self.login_password_entry.delete(0, 'end')
+        self.login_user_entry.delete(0, 'end')
     
     def ocultarSenha(self):
         self.register_password_entry.config(show="*")
@@ -120,12 +128,17 @@ class LoginForm:
         self.esconder = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoFechado.png').subsample(17)
         tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.05, rely=0.49)
     
+    def mostrar_nome_bem_vindo(self, nome):
+        tk.Label(self.opcoes_frame, text=f"Bem vindo: {nome}", font=("Arial", 9, "bold"), bg="#f2f2f2").grid(row=2, column=0, pady=10)
+    
     def verificar_login(self):
         user = self.login_user_entry.get()
         password = self.login_password_entry.get()
 
         if Sq.confirmarLogin(user, password):
             messagebox.showinfo("Login", "Login bem-sucedido!")
+            self.show_opcoes_frame()
+            self.mostrar_nome_bem_vindo(user)
         else:
             messagebox.showerror("Login", "Utilizador ou senha incorretos.")
 if __name__ == "__main__":
