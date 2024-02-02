@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox, ttk, simpledialog
 import Sqlite as Sq
 
 class LoginForm:
@@ -19,34 +19,31 @@ class LoginForm:
         root.config(bg="#1e3a56")
         self.login_frame = tk.Frame(self.root, bg="#f2f2f2")
         self.registo_frame = tk.Frame(self.root, bg="#f2f2f2")
-        self.opcoes_frame = tk.Frame(self.root, bg="#f2f2f2")   
-        
+        self.opcoes_frame = tk.Frame(self.root, bg="#f2f2f2")
+
         self.create_widgets()
         self.addBotaoVerSenhas()
 
     def create_widgets(self):
-        # Rótulo do título
         title_label = tk.Label(self.root, text="No Name Game", font=("Helvetica", 25, "bold"), bg="#1e3a56", fg="white")
         title_label.place(relx=0.5, y=25, anchor=tk.CENTER)
 
-        # Configurar a estrutura da janela
         self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.opcoes_frame.place(x=0.5, y=0.5, anchor=tk.CENTER)
-        # Widgets para o frame de login
+
         tk.Label(self.login_frame, text="Login", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=0, column=0, columnspan=2, pady=10)
         tk.Label(self.login_frame, text="Utilizador:", font=("Arial", 12), bg="#f2f2f2").grid(row=1, column=0, sticky="e", pady=5)
         tk.Label(self.login_frame, text="Senha:", font=("Arial", 12), bg="#f2f2f2").grid(row=2, column=0, sticky="e", pady=5)
 
-        self.login_user_entry = tk.Entry(self.login_frame, font=("Arial", 12))  
+        self.login_user_entry = tk.Entry(self.login_frame, font=("Arial", 12))
         self.login_password_entry = tk.Entry(self.login_frame, show="*", font=("Arial", 12))
         self.login_user_entry.grid(row=1, column=1, sticky="w", pady=5)
         self.login_password_entry.grid(row=2, column=1, sticky="w", pady=5)
 
         tk.Button(self.login_frame, text="Entrar", command=self.verificar_login, font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=3, column=0, columnspan=2, pady=10)
         tk.Button(self.login_frame, text="Criar Nova Conta!", command=self.show_register_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=4, column=0, columnspan=2, pady=10)
-        
-        # Widgets para o frame de registo
+
         tk.Label(self.registo_frame, text="Registro", font=("Arial", 16, "bold"), bg="#f2f2f2").grid(row=0, column=0, columnspan=2, pady=10)
         tk.Label(self.registo_frame, text="Utilizador:", font=("Arial", 12), bg="#f2f2f2").grid(row=1, column=0, sticky="e", pady=5)
         tk.Label(self.registo_frame, text="Nova Senha:", font=("Arial", 12), bg="#f2f2f2").grid(row=2, column=0, sticky="e", pady=5)
@@ -62,14 +59,26 @@ class LoginForm:
         tk.Button(self.registo_frame, text="Registrar", command=self.register, font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=5, column=0, columnspan=2, pady=10)
 
-        # Widgets para o frame de opções
+        def alterar_senha():
+            user = self.login_user_entry.getvar()
+            old_password = simpledialog.askstring("Alterar Senha", f"Digite a senha atual:")
+            if old_password == self.login_password_entry.getvar():
+                new_password = simpledialog.askstring("Alterar Senha", f"Digite a nova senha:")
+                if new_password:
+                    if Sq.alterarSenha(user, old_password, new_password):
+                        messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
+                    else:
+                        messagebox.showerror("Alterar Senha", "Falha ao alterar a senha. Verifique as credenciais.")
+            else:
+                messagebox.showerror("Alterar Senha", "Senha errada, tente outra vez.")
+
         tk.Label(self.opcoes_frame, text="Opções", font=("Arial", 14, "bold"), bg="#f2f2f2").grid(row=2, column=0, columnspan=4, pady=5)
         tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=26).grid(row=3, column=0, columnspan=4, pady=10)
-        tk.Button(self.opcoes_frame, text="Alterar Password", font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
+        tk.Button(self.opcoes_frame, text="Alterar Password", command=alterar_senha, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=14).grid(row=4, column=2, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Apagar Conta", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Logout", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
-        # Inicialmente, ocultar o frame de registro
+
         self.show_login_frame()
         
     def register(self):
@@ -87,7 +96,6 @@ class LoginForm:
         else:
             messagebox.showinfo("Registro", "Registro bem-sucedido!")
             Sq.criarConta(user, password)
-            # Após o registro, voltar para o frame de login
             self.show_login_frame()
 
     def show_register_frame(self):
@@ -141,6 +149,10 @@ class LoginForm:
             self.mostrar_nome_bem_vindo(user)
         else:
             messagebox.showerror("Login", "Utilizador ou senha incorretos.")
+            
+    
+    
+        
 
 if __name__ == "__main__":
     root = tk.Tk()
