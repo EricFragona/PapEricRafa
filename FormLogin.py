@@ -59,22 +59,9 @@ class LoginForm:
         tk.Button(self.registo_frame, text="Registrar", command=self.register, font=("Arial", 12, "bold"), bg="#4caf50", fg="white").grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=5, column=0, columnspan=2, pady=10)
 
-        def alterar_senha():
-            user = self.login_user_entry.getvar()
-            old_password = simpledialog.askstring("Alterar Senha", f"Digite a senha atual:")
-            if old_password == self.login_password_entry.getvar():
-                new_password = simpledialog.askstring("Alterar Senha", f"Digite a nova senha:")
-                if new_password:
-                    if Sq.alterarSenha(user, old_password, new_password):
-                        messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
-                    else:
-                        messagebox.showerror("Alterar Senha", "Falha ao alterar a senha. Verifique as credenciais.")
-            else:
-                messagebox.showerror("Alterar Senha", "Senha errada, tente outra vez.")
-
         tk.Label(self.opcoes_frame, text="Opções", font=("Arial", 14, "bold"), bg="#f2f2f2").grid(row=2, column=0, columnspan=4, pady=5)
         tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=26).grid(row=3, column=0, columnspan=4, pady=10)
-        tk.Button(self.opcoes_frame, text="Alterar Password", command=alterar_senha, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
+        tk.Button(self.opcoes_frame, text="Alterar Password", command=self.alterar_senha, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=14).grid(row=4, column=2, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Apagar Conta", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Logout", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
@@ -117,8 +104,6 @@ class LoginForm:
         self.login_frame.place_forget()
         self.registo_frame.place_forget()
         self.opcoes_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-        self.login_password_entry.delete(0, 'end')
-        self.login_user_entry.delete(0, 'end')
     
     def ocultarSenha(self):
         self.register_password_entry.config(show="*")
@@ -149,10 +134,22 @@ class LoginForm:
             self.mostrar_nome_bem_vindo(user)
         else:
             messagebox.showerror("Login", "Utilizador ou senha incorretos.")
-            
-    
-    
-        
+
+    def alterar_senha(self):
+        user = self.login_user_entry.get()
+        confirmar = Sq.obterSenha(user)
+        old_password = simpledialog.askstring("Alterar Senha", "Digite a senha atual:")
+
+        if old_password == confirmar:  # Utilizando a função obterSenha para verificar a senha atual
+            new_password = simpledialog.askstring("Alterar Senha", "Digite a nova senha:")
+            if new_password:
+                if Sq.alterarSenha(user, old_password, new_password):
+                    messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
+                else:
+                    messagebox.showerror("Alterar Senha", "Falha ao alterar a senha. Verifique as credenciais.")
+        else:
+            messagebox.showerror("Alterar Senha", "Senha incorreta. Tente novamente.")
+
 
 if __name__ == "__main__":
     root = tk.Tk()
