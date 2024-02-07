@@ -64,7 +64,7 @@ class LoginForm:
         tk.Button(self.opcoes_frame, text="Alterar Password", command=self.alterar_senha, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=14).grid(row=4, column=2, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Apagar Conta", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
-        tk.Button(self.opcoes_frame, text="Logout", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Logout", command=self.logout, font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
 
         self.show_login_frame()
         
@@ -99,7 +99,7 @@ class LoginForm:
         self.register_user_entry.delete(0, 'end')
         self.register_password_entry.delete(0, 'end')
         self.repetir_password_entry.delete(0, 'end')
-        
+    
     def show_opcoes_frame(self):
         self.login_frame.place_forget()
         self.registo_frame.place_forget()
@@ -122,8 +122,13 @@ class LoginForm:
         tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.05, rely=0.49)
     
     def mostrar_nome_bem_vindo(self, nome):
-        tk.Label(self.root, text=f"Bem vindo: {nome}", font=("Arial", 14, "bold"), bg="#1e3a56", fg="white").place(relx=0, rely=0.03)
+        self.bemVindo = tk.Label(self.root, text=f"Bem vindo: {nome}", font=("Arial", 14, "bold"), bg="#1e3a56", fg="white").place(relx=0, rely=0.03)
     
+    def logout(self):
+        self.show_login_frame
+        self.login_user_entry.delete(0, 'end')
+        self.login_password_entry.delete(0, 'end')
+
     def verificar_login(self):
         user = self.login_user_entry.get()
         password = self.login_password_entry.get()
