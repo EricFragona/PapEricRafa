@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, ttk, simpledialog
+from tkinter import Tk, messagebox, ttk, simpledialog
 import Sqlite as Sq
 
 class LoginForm:
@@ -144,16 +144,17 @@ class LoginForm:
         user = self.login_user_entry.get()
         confirmar = Sq.obterSenha(user)
         old_password = simpledialog.askstring("Alterar Senha", "Digite a senha atual:")
-
-        if old_password == confirmar:  # Utilizando a função obterSenha para verificar a senha atual
+        print("DEBUG: Senha confirmada do banco de dados:", confirmar)
+        if confirmar == old_password:  # Verifica se há uma senha retornada do banco de dados
             new_password = simpledialog.askstring("Alterar Senha", "Digite a nova senha:")
             if new_password:
-                if Sq.alterarSenha(user, old_password, new_password):
+                if Sq.alterarSenha(user, confirmar, new_password):  # Passa a senha atual confirmada em vez de old_password
                     messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
                 else:
                     messagebox.showerror("Alterar Senha", "Falha ao alterar a senha. Verifique as credenciais.")
         else:
             messagebox.showerror("Alterar Senha", "Senha incorreta. Tente novamente.")
+
 
 
 if __name__ == "__main__":
