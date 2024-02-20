@@ -63,8 +63,8 @@ class LoginForm:
         tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=26).grid(row=3, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Password", command=self.alterar_senha, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=14).grid(row=4, column=2, columnspan=2, pady=10)
-        tk.Button(self.opcoes_frame, text="Apagar Conta", font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
-        tk.Button(self.opcoes_frame, text="Logout", command=self.logout, font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Apagar Conta", command=self.apagar_conta, font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Logout", command=self.logout , font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
 
         self.show_login_frame()
         
@@ -125,7 +125,7 @@ class LoginForm:
         self.bemVindo = tk.Label(self.root, text=f"Bem vindo: {nome}", font=("Arial", 14, "bold"), bg="#1e3a56", fg="white").place(relx=0, rely=0.03)
     
     def logout(self):
-        self.show_login_frame
+        self.show_login_frame()
         self.login_user_entry.delete(0, 'end')
         self.login_password_entry.delete(0, 'end')
 
@@ -141,19 +141,40 @@ class LoginForm:
             messagebox.showerror("Login", "Utilizador ou senha incorretos.")
 
     def alterar_senha(self):
-        user = self.login_user_entry.get()
-        confirmar = Sq.obterSenha(user)
-        old_password = simpledialog.askstring("Alterar Senha", "Digite a senha atual:")
-        print("DEBUG: Senha confirmada do banco de dados:", confirmar)
-        if confirmar == old_password:  # Verifica se há uma senha retornada do banco de dados
-            new_password = simpledialog.askstring("Alterar Senha", "Digite a nova senha:")
-            if new_password:
-                if Sq.alterarSenha(user, confirmar, new_password):  # Passa a senha atual confirmada em vez de old_password
-                    messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
-                else:
-                    messagebox.showerror("Alterar Senha", "Falha ao alterar a senha. Verifique as credenciais.")
+        password_atual = simpledialog.askstring("Alterar Senha", "Digite a senha atual:")
+        if password_atual:
+            user = self.login_user_entry.get()
+            old_password_from_db = Sq.obterSenha(user)
+            print("DEBUG: Old Password from DB:", old_password_from_db)
+            print("DEBUG: Password provided by user:", password_atual)
+            if old_password_from_db == password_atual:
+                new_password = simpledialog.askstring("Alterar Senha", "Digite a nova senha:")
+                if new_password:
+                    if Sq.alterarSenha(user, password_atual, new_password):
+                        messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
+                    else:
+                        messagebox.showerror("Alterar Senha", "Falha ao alterar a senha. Verifique as credenciais.")
+            else:
+                messagebox.showerror("Alterar Senha", "Senha atual incorreta.")
         else:
-            messagebox.showerror("Alterar Senha", "Senha incorreta. Tente novamente.")
+            messagebox.showerror("Alterar Senha", "Senha atual não fornecida.")
+    
+    def apagar_conta(self):
+        user = self.login_user_entry.get()
+        if user:
+            confirmar = messagebox.askyesno("Apagar Conta", "Tem certeza que deseja apagar a conta?")
+            if confirmar:
+                if Sq.apagarConta(user):
+                    messagebox.showinfo("Apagar Conta", "Conta apagada com sucesso!")
+                    self.show_login_frame()
+                else:
+                    messagebox.showerror("Apagar Conta", "Falha ao apagar a conta. Verifique as credenciais.")
+            else:
+                messagebox.showinfo("Apagar Conta", "Operação cancelada pelo usuário.")
+        else:
+            messagebox.showerror("Apagar Conta", "Digite o nome de usuário para apagar a conta.")
+
+
 
 
 
