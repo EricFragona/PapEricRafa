@@ -15,8 +15,12 @@ def criarConta(user, passw):
     conn = sqlite3.connect('baseDados.db')
     cur = conn.cursor()
     cur.execute("INSERT INTO user (Nome, Pin) VALUES (?, ?)", (user, passw))
+    cur.execute("INSERT INTO permissoes (Perms, Comentario) VALUES (?, ?)", (1, "player"))
+    cur.execute("INSERT INTO progresso (Moedas) VALUES (?)", (0,))
+    cur.execute("INSERT INTO upgrades (Upg1, Upg2, Upg3, Upg4 ,Upg5) VALUES (?, ?, ?, ?, ?)", (0, 0, 0, 0, 0))
     conn.commit()
     conn.close()
+
     
 def alterarSenha(user, old_password, new_password):
     conn = sqlite3.connect('baseDados.db')
@@ -46,6 +50,29 @@ def obterSenha(user):
 def apagarConta(user):
     conn = sqlite3.connect('baseDados.db')
     cur = conn.cursor()
+
+    # Check if the user exists
+    cur.execute("SELECT * FROM user WHERE Nome=?", (user,))
+    existing_user = cur.fetchone()
+    print("Existing User:", existing_user)  # Add this line
+    if not existing_user:
+        conn.close()
+        return False
+
+    # Delete the user
     cur.execute("DELETE FROM user WHERE Nome=?", (user,))
     conn.commit()
     conn.close()
+    return True
+
+def alterarNome(user, novo_nome):
+    try:
+        conn = sqlite3.connect('baseDados.db')
+        cur = conn.cursor()
+        cur.execute("UPDATE user SET Nome = ? WHERE Nome = ?", (novo_nome, user))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Error:", e)
+        return False

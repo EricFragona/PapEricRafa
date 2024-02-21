@@ -62,7 +62,7 @@ class LoginForm:
         tk.Label(self.opcoes_frame, text="Opções", font=("Arial", 14, "bold"), bg="#f2f2f2").grid(row=2, column=0, columnspan=4, pady=5)
         tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=26).grid(row=3, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Password", command=self.alterar_senha, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
-        tk.Button(self.opcoes_frame, text="Alterar Nome", font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=14).grid(row=4, column=2, columnspan=2, pady=10)
+        tk.Button(self.opcoes_frame, text="Alterar Nome", command=self.alterar_nome, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=14).grid(row=4, column=2, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Apagar Conta", command=self.apagar_conta, font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Logout", command=self.logout , font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
 
@@ -121,9 +121,6 @@ class LoginForm:
         self.esconder = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoFechado.png').subsample(17)
         tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.05, rely=0.49)
     
-    def mostrar_nome_bem_vindo(self, nome):
-        self.bemVindo = tk.Label(self.root, text=f"Bem vindo: {nome}", font=("Arial", 14, "bold"), bg="#1e3a56", fg="white").place(relx=0, rely=0.03)
-    
     def logout(self):
         self.show_login_frame()
         self.login_user_entry.delete(0, 'end')
@@ -136,19 +133,18 @@ class LoginForm:
         if Sq.confirmarLogin(user, password):
             messagebox.showinfo("Login", "Login bem-sucedido!")
             self.show_opcoes_frame()
-            self.mostrar_nome_bem_vindo(user)
         else:
             messagebox.showerror("Login", "Utilizador ou senha incorretos.")
 
     def alterar_senha(self):
-        password_atual = simpledialog.askstring("Alterar Senha", "Digite a senha atual:")
+        password_atual = int(simpledialog.askstring("Alterar Senha", "Digite a senha atual:"))
         if password_atual:
-            user = self.login_user_entry.get()
+            user = int(self.login_user_entry.get())
             old_password_from_db = Sq.obterSenha(user)
             print("DEBUG: Old Password from DB:", old_password_from_db)
             print("DEBUG: Password provided by user:", password_atual)
             if old_password_from_db == password_atual:
-                new_password = simpledialog.askstring("Alterar Senha", "Digite a nova senha:")
+                new_password = int(simpledialog.askstring("Alterar Senha", "Digite a nova senha:"))
                 if new_password:
                     if Sq.alterarSenha(user, password_atual, new_password):
                         messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
@@ -174,8 +170,16 @@ class LoginForm:
         else:
             messagebox.showerror("Apagar Conta", "Digite o nome de usuário para apagar a conta.")
 
-
-
+    def alterar_nome(self):
+        novo_nome = simpledialog.askstring("Alterar Nome", "Digite o novo nome:")
+        if novo_nome:
+            user = self.login_user_entry.get()
+            if Sq.alterarNome(user, novo_nome):
+                messagebox.showinfo("Alterar Nome", "Nome alterado com sucesso!")
+            else:
+                messagebox.showerror("Alterar Nome", "Falha ao alterar o nome. Verifique as credenciais.")
+        else:
+            messagebox.showerror("Alterar Nome", "Nome não fornecido.")
 
 
 if __name__ == "__main__":
