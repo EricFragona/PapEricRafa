@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import Tk, messagebox, ttk, simpledialog
 import Sqlite as Sq
+import NoNameGame as NNG
+
 
 class LoginForm:
     def __init__(self, root):
@@ -20,7 +22,7 @@ class LoginForm:
         self.login_frame = tk.Frame(self.root, bg="#f2f2f2")
         self.registo_frame = tk.Frame(self.root, bg="#f2f2f2")
         self.opcoes_frame = tk.Frame(self.root, bg="#f2f2f2")
-
+        #self.NoNameGame()
         self.create_widgets()
         self.addBotaoVerSenhas()
         self.show_login_frame()
@@ -61,11 +63,14 @@ class LoginForm:
         tk.Button(self.registo_frame, text="Já tenho conta! ", command=self.show_login_frame, font=("Arial", 12, "underline"), bg="#1e3a56", fg="white").grid(row=5, column=0, columnspan=2, pady=10)
 
         tk.Label(self.opcoes_frame, text="Opções", font=("Arial", 14, "bold"), bg="#f2f2f2").grid(row=2, column=0, columnspan=4, pady=5)
-        tk.Button(self.opcoes_frame, text="Jogar!!!", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=26).grid(row=3, column=0, columnspan=4, pady=10)
+        tk.Button(self.opcoes_frame, text="Jogar!!!", command=self.playgame, font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=26).grid(row=3, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Password", command=self.alterar_senha, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=13).grid(row=4, column=0, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Alterar Nome", command=self.alterar_nome, font=("Arial", 11, "bold"), bg="#f39c12", fg="white", width=14).grid(row=4, column=2, columnspan=2, pady=10)
         tk.Button(self.opcoes_frame, text="Apagar Conta", command=self.apagar_conta, font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Logout", command=self.logout , font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
+
+    def playgame():
+        NNG()
 
     def register(self):
         user = self.register_user_entry.get()
@@ -116,9 +121,9 @@ class LoginForm:
         self.login_password_entry.config(show="")
     
     def addBotaoVerSenhas(self):
-        self.ver = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoAberto.png').subsample(17)
+        self.ver = tk.PhotoImage(file=r"C:/Users/rafah/Documents/GitHub/PapEricRafa/Imagens/olhoAberto.png").subsample(17)
         self.btnVer = tk.Button(self.root, text="Mostrar", image=self.ver, compound="left", command=self.mostrarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=106).place(relx=0.05, rely=0.37)
-        self.esconder = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoFechado.png').subsample(17)
+        self.esconder = tk.PhotoImage(file=r"C:/Users/rafah/Documents/GitHub/PapEricRafa/Imagens/olhoFechado.png").subsample(17)
         self.btnEsconder = tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.05, rely=0.49)
     
     def logout(self):
@@ -184,6 +189,7 @@ class LoginForm:
 
 if __name__ == "__main__":
     root = tk.Tk()
+    print(root)
     app = LoginForm(root)
     
     root.mainloop()
