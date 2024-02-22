@@ -1,66 +1,12 @@
 import pygame
 
 
-red = (255, 0, 0)
-green = (0,255,0)
-blue = (0,0,255)
-white = (255,255,255)
-black= (0,0,0)
-purple = (127,0,255)
-orange = (255,165,0)
 
 
 
-
-
-
-
-#variaveis
-green_value = 1
-red_value = 2
-orange_value = 3
-white_value = 4
-purple_value = 5
-draw_green = False
-draw_red = False
-draw_orange = False
-draw_white = False
-draw_purple = False
-green_length = 0
-red_length = 0
-orange_length = 0
-white_length = 0
-purple_length = 0
-green_speed = 5
-red_speed = 4
-orange_speed = 3
-white_speed = 2
-purple_speed = 1
-score = 0
-
-
-#funcao butoes variaveis
-green_cost = 1
-green_owned = False
-green_manager_cost = 100
-red_cost = 2
-red_owned = False
-red_manager_cost = 500
-orange_cost = 3
-orange_owned = False
-orange_manager_cost = 1800
-white_cost = 4
-white_owned = False
-white_manager_cost = 4000
-purple_cost = 5
-purple_owned = False
-purple_manager_cost = 10000
-
-
-
-
-def funcao_design(color,y_coord,value,draw,length, speed):
-    global score
+def funcao_design(color,y_coord,value,draw,length, speed,score,screen,font):
+    white = (255,255,255)
+    black= (0,0,0)
     if draw and length <200:
         length += speed
     elif length >= 200:
@@ -73,10 +19,12 @@ def funcao_design(color,y_coord,value,draw,length, speed):
     pygame.draw.rect(screen,color,[70, y_coord - 15,length,30])
     Value_Text = font.render(str(round(value,1)),True, white)
     screen.blit(Value_Text,(20,y_coord - 10 ))
-    return task, length, draw,
+    return task, length, draw,score
 
 
-def funcao_butoes(color,x_coord,cost, owned, manager_cost):
+def funcao_butoes(color,x_coord,cost, owned, manager_cost,screen,font):
+    white = (255,255,255)
+    black= (0,0,0)
     color_button = pygame.draw.rect(screen, color,[x_coord,340,50, 30])
     color_cost = font.render(str(round(cost, 2)),True,black)
     screen.blit(color_cost,(x_coord + 6, 350))
@@ -91,7 +39,65 @@ def funcao_butoes(color,x_coord,cost, owned, manager_cost):
 
 
 
-if __name__ == "__main__":
+def playgame():
+        
+    red = (255, 0, 0)
+    green = (0,255,0)
+    blue = (0,0,255)
+    white = (255,255,255)
+    black= (0,0,0)
+    purple = (127,0,255)
+    orange = (255,165,0)
+
+
+
+
+    #variaveis
+    green_value = 1
+    red_value = 2
+    orange_value = 3
+    white_value = 4
+    purple_value = 5
+    draw_green = False
+    draw_red = False
+    draw_orange = False
+    draw_white = False
+    draw_purple = False
+    green_length = 0
+    red_length = 0
+    orange_length = 0
+    white_length = 0
+    purple_length = 0
+    green_speed = 5
+    red_speed = 4
+    orange_speed = 3
+    white_speed = 2
+    purple_speed = 1
+    score = 0
+
+
+    #funcao butoes variaveis
+    green_cost = 1
+    green_owned = False
+    green_manager_cost = 100
+    red_cost = 2
+    red_owned = False
+    red_manager_cost = 500
+    orange_cost = 3
+    orange_owned = False
+    orange_manager_cost = 1800
+    white_cost = 4
+    white_owned = False
+    white_manager_cost = 4000
+    purple_cost = 5
+    purple_owned = False
+    purple_manager_cost = 10000
+
+        
+    
+    
+    
+    
     pygame.init()
 
     screen = pygame.display.set_mode([300, 450])
@@ -166,17 +172,17 @@ if __name__ == "__main__":
                     purple_cost += .1
 
         screen.fill(background)
-        task1, green_length, draw_green = funcao_design(green, 50, green_value, draw_green, green_length, green_speed)
-        task2, red_length, draw_red = funcao_design(red, 100, red_value, draw_red, red_length, red_speed)
-        task3, orange_length, draw_orange = funcao_design(orange, 150, orange_value, draw_orange, orange_length, orange_speed)
-        task4, white_length, draw_white = funcao_design(white, 200, white_value, draw_white, white_length, white_speed)
-        task5, purple_length, draw_purple = funcao_design(purple, 250, purple_value, draw_purple, purple_length,purple_speed)
-        green_buy, green_manager_buy = funcao_butoes(green, 10, green_cost, green_owned, green_manager_cost)
-        red_buy, red_manager_buy = funcao_butoes(red, 70, red_cost, red_owned, red_manager_cost)
-        orange_buy, orange_manager_buy = funcao_butoes(orange, 130, orange_cost, orange_owned, orange_manager_cost)
-        white_buy, white_manager_buy = funcao_butoes(white, 190, white_cost, white_owned, white_manager_cost)
-        purple_buy, purple_manager_buy = funcao_butoes(purple, 250, purple_cost, purple_owned, purple_manager_cost)
-        display_score = font.render('Money: $' + str(round(score, 2)), True, white, black, )
+        task1, green_length, draw_green,score = funcao_design(green, 50, green_value, draw_green, green_length, green_speed,score,screen,font)
+        task2, red_length, draw_red,score = funcao_design(red, 100, red_value, draw_red, red_length, red_speed,score,screen,font)
+        task3, orange_length, draw_orange,score = funcao_design(orange, 150, orange_value, draw_orange, orange_length, orange_speed,score,screen,font)
+        task4, white_length, draw_white,score = funcao_design(white, 200, white_value, draw_white, white_length, white_speed,score,screen,font)
+        task5, purple_length, draw_purple,score = funcao_design(purple, 250, purple_value, draw_purple, purple_length,purple_speed,score,screen,font)
+        green_buy, green_manager_buy = funcao_butoes(green, 10, green_cost, green_owned, green_manager_cost,screen,font)
+        red_buy, red_manager_buy = funcao_butoes(red, 70, red_cost, red_owned, red_manager_cost,screen,font)
+        orange_buy, orange_manager_buy = funcao_butoes(orange, 130, orange_cost, orange_owned, orange_manager_cost,screen,font)
+        white_buy, white_manager_buy = funcao_butoes(white, 190, white_cost, white_owned, white_manager_cost,screen,font)
+        purple_buy, purple_manager_buy = funcao_butoes(purple, 250, purple_cost, purple_owned, purple_manager_cost,screen,font)
+        display_score = font.render('Money: $' + str(round(score, 2)), True, white, black)
         screen.blit(display_score, (10, 5))
         buy_more = font.render('Buy More:', True, white)
         screen.blit(buy_more, (10, 315))
