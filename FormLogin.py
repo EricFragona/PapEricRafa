@@ -23,7 +23,8 @@ class LoginForm:
 
         self.create_widgets()
         self.addBotaoVerSenhas()
-
+        self.show_login_frame()
+        
     def create_widgets(self):
         title_label = tk.Label(self.root, text="No Name Game", font=("Helvetica", 25, "bold"), bg="#1e3a56", fg="white")
         title_label.place(relx=0.5, y=25, anchor=tk.CENTER)
@@ -66,8 +67,6 @@ class LoginForm:
         tk.Button(self.opcoes_frame, text="Apagar Conta", command=self.apagar_conta, font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=5, column=0, columnspan=4, pady=10)
         tk.Button(self.opcoes_frame, text="Logout", command=self.logout , font=("Arial", 12, "bold"), bg="#e74c3c", fg="white", width=25).grid(row=6, column=0, columnspan=4, pady=10)
 
-        self.show_login_frame()
-        
     def register(self):
         user = self.register_user_entry.get()
         password = self.register_password_entry.get()
@@ -91,6 +90,7 @@ class LoginForm:
         self.registo_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.login_password_entry.delete(0, 'end')
         self.login_user_entry.delete(0, 'end')
+        self.addBotaoVerSenhas()
          
     def show_login_frame(self):
         self.registo_frame.place_forget()
@@ -117,9 +117,9 @@ class LoginForm:
     
     def addBotaoVerSenhas(self):
         self.ver = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoAberto.png').subsample(17)
-        tk.Button(self.root, text="Mostrar", image=self.ver, compound="left", command=self.mostrarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=106).place(relx=0.05, rely=0.37)
+        self.btnVer = tk.Button(self.root, text="Mostrar", image=self.ver, compound="left", command=self.mostrarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#4caf50", fg="white", width=106).place(relx=0.05, rely=0.37)
         self.esconder = tk.PhotoImage(file=r'C:\Users\aluno\Documents\GitHub\PapEricRafa\Imagens\olhoFechado.png').subsample(17)
-        tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.05, rely=0.49)
+        self.btnEsconder = tk.Button(self.root, text="Esconder", image=self.esconder, compound="left", command=self.ocultarSenha, bd=2, relief="raised", font=("Arial", 12, "bold"), bg="#3498db", fg="white").place(relx=0.05, rely=0.49)
     
     def logout(self):
         self.show_login_frame()
@@ -137,14 +137,14 @@ class LoginForm:
             messagebox.showerror("Login", "Utilizador ou senha incorretos.")
 
     def alterar_senha(self):
-        password_atual = int(simpledialog.askstring("Alterar Senha", "Digite a senha atual:"))
+        password_atual = int(simpledialog.askstring("Alterar Senha\t\t", "Digite a senha atual:\t\t"))
         if password_atual:
             user = int(self.login_user_entry.get())
             old_password_from_db = Sq.obterSenha(user)
             print("DEBUG: Old Password from DB:", old_password_from_db)
             print("DEBUG: Password provided by user:", password_atual)
             if old_password_from_db == password_atual:
-                new_password = int(simpledialog.askstring("Alterar Senha", "Digite a nova senha:"))
+                new_password = int(simpledialog.askstring("Alterar Senha\t\t", "Digite a nova senha:\t\t"))
                 if new_password:
                     if Sq.alterarSenha(user, password_atual, new_password):
                         messagebox.showinfo("Alterar Senha", "Senha alterada com sucesso!")
@@ -171,7 +171,7 @@ class LoginForm:
             messagebox.showerror("Apagar Conta", "Digite o nome de usuário para apagar a conta.")
 
     def alterar_nome(self):
-        novo_nome = simpledialog.askstring("Alterar Nome", "Digite o novo nome:")
+        novo_nome = simpledialog.askstring("Alterar Nome\t\t", "Digite o novo nome:\t\t")
         if novo_nome:
             user = self.login_user_entry.get()
             if Sq.alterarNome(user, novo_nome):

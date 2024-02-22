@@ -50,16 +50,12 @@ def obterSenha(user):
 def apagarConta(user):
     conn = sqlite3.connect('baseDados.db')
     cur = conn.cursor()
-
-    # Check if the user exists
     cur.execute("SELECT * FROM user WHERE Nome=?", (user,))
     existing_user = cur.fetchone()
-    print("Existing User:", existing_user)  # Add this line
+    print("Existing User:", existing_user)
     if not existing_user:
         conn.close()
         return False
-
-    # Delete the user
     cur.execute("DELETE FROM user WHERE Nome=?", (user,))
     conn.commit()
     conn.close()
